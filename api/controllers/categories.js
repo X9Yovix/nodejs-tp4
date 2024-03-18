@@ -2,9 +2,18 @@ const categoriesModel = require("../models/categories")
 
 const getCategories = async (req, res) => {
   try {
-    const categories = await categoriesModel.find()
+    const categoriesWithProducts = await categoriesModel.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "category",
+          as: "products"
+        }
+      }
+    ])
     res.status(200).json({
-      categories: categories
+      categories: categoriesWithProducts
     })
   } catch (error) {
     res.status(500).json({
@@ -50,7 +59,7 @@ const updateCategory = async (req, res) => {
   try {
     const category = await categoriesModel.findById(req.params.id)
     if (category) {
-      category.name = req.body.name
+      Object.assign(category, req.body)
       const updatedCategory = await category.save()
       res.status(200).json({
         category: updatedCategory
