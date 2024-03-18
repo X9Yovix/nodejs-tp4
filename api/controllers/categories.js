@@ -33,8 +33,8 @@ const getCategory = async (req, res) => {
 }
 
 const createCategory = async (req, res) => {
-  const category = new categoriesModel(req.body)
   try {
+    const category = new categoriesModel(req.body)
     const newCategory = await category.save()
     res.status(201).json({
       category: newCategory

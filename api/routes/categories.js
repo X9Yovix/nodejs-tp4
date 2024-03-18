@@ -32,6 +32,14 @@ router.get("/", categoriesController.getCategories)
  *   get:
  *     summary: Get a category by ObjectId
  *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the category
+ *         schema:
+ *           type: string
+ *           format: string
  *     responses:
  *       200:
  *         description: A category object
